@@ -23,7 +23,7 @@ const StyledFab = styled(Fab)({
 
 export default function Navbar() {
   type Anchor = 'top' | 'left' | 'bottom' | 'right';
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(anchorEl ? null : event.currentTarget);
@@ -83,7 +83,6 @@ export default function Navbar() {
                 <Popper
   placement="top"
   disablePortal={false}
-  id={id} open={open} anchorEl={anchorEl}
   modifiers={[
     {
       name: 'flip',

@@ -17,6 +17,7 @@ import Fab from "@mui/material/Fab";
 import IconButton from "@mui/material/IconButton";
 import Toolbar from "@mui/material/Toolbar";
 import { styled } from "@mui/material/styles";
+import SendIcon from '@mui/icons-material/Send';
 import * as React from "react";
 
 const StyledFab = styled(Fab)({
@@ -30,7 +31,7 @@ const StyledFab = styled(Fab)({
 
 export default function Navbar() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const [postMessage, setPostMessage] = React.useState<any>(null);
+  const [postMessage, setPostMessage] = React.useState<any>("");
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(anchorEl ? null : event.currentTarget);
@@ -111,15 +112,16 @@ export default function Navbar() {
                     <div>
                       <TextField
                         id="outlined-multiline-flexible"
-                        label="Multiline"
+                        label="Your Message"
                         multiline
                         maxRows={4}
                         value={postMessage}
                         onChange={handleTextFieldChange}
+
                       />
                     </div>
                   </Box>
-                  <Button disabled={postMessage.length === 0} variant="contained" color="success" endIcon={<SendIcon />} onClick={() => alert(postMessage)}>Post It!</Button>
+                  <Button disabled={postMessage.length === 0} variant="contained" color="success" endIcon={<SendIcon/>} onClick={() => alert(postMessage)}>Post It!</Button>
                 </Box>
               </Fade>
             )}

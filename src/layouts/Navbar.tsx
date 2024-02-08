@@ -2,7 +2,14 @@ import AddIcon from "@mui/icons-material/Add";
 import MenuIcon from "@mui/icons-material/Menu";
 import MoreIcon from "@mui/icons-material/MoreVert";
 import SearchIcon from "@mui/icons-material/Search";
-import { Button, Drawer, Popper } from "@mui/material";
+import {
+  Button,
+  Drawer,
+  Fade,
+  Popper,
+  TextField,
+  Typography,
+} from "@mui/material";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -23,7 +30,7 @@ const StyledFab = styled(Fab)({
 
 export default function Navbar() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-
+  const [postMessage, setPostMessage] = React.useState<any>(null);
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(anchorEl ? null : event.currentTarget);
@@ -53,6 +60,9 @@ export default function Navbar() {
 
       setState({ ...state, [anchor]: open });
     };
+  const handleTextFieldChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPostMessage(e.target.value);
+  };
 
   return (
     <React.Fragment>
@@ -85,21 +95,34 @@ export default function Navbar() {
           <IconButton color="inherit">
             <MoreIcon />
           </IconButton>
-          <Popper
-            id={id}
-            open={open}
-            anchorEl={anchorEl}
-
-          >
-            <Box sx={{ border: 1, p: 1, bgcolor: "background.paper" }}>
-              <Button
-                onClick={() => {
-                  alert("HELL YEAH");
-                }}
-              >
-                hell yeah
-              </Button>
-            </Box>
+          <Popper id={id} open={open} anchorEl={anchorEl} transition>
+            {({ TransitionProps }) => (
+              <Fade {...TransitionProps}>
+                <Box sx={{ border: 1, p: 1, bgcolor: "background.paper" }}>
+                  <span>Add a New Post:</span>
+                  <Box
+                    component="form"
+                    sx={{
+                      "& .MuiTextField-root": { m: 1, width: "25ch" },
+                    }}
+                    noValidate
+                    autoComplete="off"
+                  >
+                    <div>
+                      <TextField
+                        id="outlined-multiline-flexible"
+                        label="Multiline"
+                        multiline
+                        maxRows={4}
+                        value={postMessage}
+                        onChange={handleTextFieldChange}
+                      />
+                    </div>
+                  </Box>
+                  <Button disabled={postMessage.length === 0} variant="contained" color="success" endIcon={<SendIcon />} onClick={() => alert(postMessage)}>Post It!</Button>
+                </Box>
+              </Fade>
+            )}
           </Popper>
         </Toolbar>
       </AppBar>

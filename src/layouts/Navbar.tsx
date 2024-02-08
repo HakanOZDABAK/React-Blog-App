@@ -22,19 +22,19 @@ const StyledFab = styled(Fab)({
 });
 
 export default function Navbar() {
-  type Anchor = 'top' | 'left' | 'bottom' | 'right';
-    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(anchorEl ? null : event.currentTarget);
   };
 
   const open = Boolean(anchorEl);
-  const id = open ? 'simple-popper' : undefined;
-
+  const id = open ? "simple-popper" : undefined;
+  type Anchor = "top" | "left" | "bottom" | "right";
 
   const [state, setState] = React.useState({
-       top: false,
+    top: false,
     left: false,
     bottom: false,
     right: false,
@@ -60,13 +60,9 @@ export default function Navbar() {
       <AppBar position="fixed" color="primary" sx={{ top: "auto", bottom: 0 }}>
         <Toolbar>
           <IconButton color="inherit" aria-label="open drawer">
-            {(['left'] as const).map((anchor) => (
+            {(["left"] as const).map((anchor) => (
               <React.Fragment key={anchor}>
-                <MenuIcon
-                  onClick={
-                    toggleDrawer(anchor, true)
-                  }
-                />
+                <MenuIcon onClick={toggleDrawer(anchor, true)} />
                 <Drawer
                   anchor={anchor}
                   open={state[anchor]}
@@ -77,45 +73,11 @@ export default function Navbar() {
               </React.Fragment>
             ))}
           </IconButton>
-          <StyledFab color="secondary" aria-label="add">
-            <AddIcon onClick={()=>{
-              return (
-                <Popper
-  placement="top"
-  disablePortal={false}
-  modifiers={[
-    {
-      name: 'flip',
-      enabled: false,
-      options: {
-        altBoundary: false,
-        rootBoundary: 'document',
-        padding: 8,
-      },
-    },
-    {
-      name: 'preventOverflow',
-      enabled: false,
-      options: {
-        altAxis: true,
-        altBoundary: true,
-        tether: true,
-        rootBoundary: 'document',
-        padding: 8,
-      },
-    },
-    {
-      name: 'arrow',
-      enabled: true,
-      options: {
-        element: arrowRef,
-      },
-    },
-  ]}
-></Popper>
-              )
-            }}/>
-          </StyledFab>
+          <StyledFab
+            color="secondary"
+            aria-label="add"
+            onClick={handleClick}
+          ></StyledFab>
           <Box sx={{ flexGrow: 1 }} />
           <IconButton color="inherit">
             <SearchIcon />
@@ -123,6 +85,22 @@ export default function Navbar() {
           <IconButton color="inherit">
             <MoreIcon />
           </IconButton>
+          <Popper
+            id={id}
+            open={open}
+            anchorEl={anchorEl}
+
+          >
+            <Box sx={{ border: 1, p: 1, bgcolor: "background.paper" }}>
+              <Button
+                onClick={() => {
+                  alert("HELL YEAH");
+                }}
+              >
+                hell yeah
+              </Button>
+            </Box>
+          </Popper>
         </Toolbar>
       </AppBar>
     </React.Fragment>

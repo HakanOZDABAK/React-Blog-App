@@ -37,6 +37,7 @@ export default function SignUp() {
     const userRegisterData={
       email:data.get("email"),
       password:data.get("password"),
+      profileName:data.get("userName"),
       firstName:data.get("firstName"),
       lastName:data.get("lastName")
     }
@@ -84,6 +85,16 @@ export default function SignUp() {
                   label="Last Name"
                   name="lastName"
                   autoComplete="family-name"
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  id="userName"
+                  label="Username"
+                  name="userName"
+                  autoComplete="userName"
                 />
               </Grid>
               <Grid item xs={12}>

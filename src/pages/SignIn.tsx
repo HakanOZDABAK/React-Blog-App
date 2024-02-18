@@ -34,6 +34,12 @@ export default function SignIn() {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
+    const userLoginData={
+      email:data.get("email"),
+      password:data.get("password"),
+    }
+    let userServices = new UserServices()
+    userServices.userLogin(userLoginData).then(result=>console.log(result.data))
 
 
     }

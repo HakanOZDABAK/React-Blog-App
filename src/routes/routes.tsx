@@ -5,8 +5,8 @@ const SignIn = React.lazy(
 const SignUp = React.lazy(
     ()=>import('../pages/SignUp')
 )
-const HomePage = React.lazy(
-    ()=>import('../pages/MainPage')
+const  HomePage =   React.lazy(
+     ()=>import('../pages/MainPage')
 )
   export type IRoute = {
     name: string;

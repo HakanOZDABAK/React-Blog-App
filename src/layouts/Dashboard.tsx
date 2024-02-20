@@ -1,12 +1,18 @@
-import React from 'react'
-import MainPage from '../pages/MainPage'
-import SignUp from '../pages/SignUp'
-import { Route, Routes } from 'react-router'
-import { IRoute, routes } from '../routes/routes'
+import React, { Suspense } from "react";
+import MainPage from "../pages/MainPage";
+import SignUp from "../pages/SignUp";
+import { Navigate, Route, Routes } from "react-router";
+import { IRoute, routes } from "../routes/routes";
+import { useUserStore } from "../store/useUserStore";
+import SignIn from "../pages/SignIn";
 
 export default function Dashboard() {
-  return (
-    <Routes>
+  const { login } = useUserStore();
+
+  if (login) {
+    return (
+      <Suspense fallback ={<div>Loading</div>}>
+      <Routes>
         {routes.map((route: IRoute) => (
           <Route
             key={route.path}
@@ -14,6 +20,17 @@ export default function Dashboard() {
             element={<route.component />}
           />
         ))}
-    </Routes>
-  )
-      }
+      </Routes>
+      </Suspense>
+    );
+  } else {
+    return(    
+    <Routes>
+      <Route path="/*" element={<Navigate to="/signIn"  />} />
+      <Route path="/signIn" element={<SignIn />} />
+      <Route path="/signUp" element={<SignUp />} />
+
+    </Routes>)
+
+  }
+}

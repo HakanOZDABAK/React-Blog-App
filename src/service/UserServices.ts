@@ -22,7 +22,7 @@ export class UserServices {
             "Content-Type": "application/json",
         },
     }
-    );
+    ).then(result=>result.data)
 
 }
 }

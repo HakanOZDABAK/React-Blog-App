@@ -1,4 +1,5 @@
 import React from 'react';
+
 const SignIn = React.lazy(
     ()=>import('../pages/SignIn')
 )
@@ -8,6 +9,7 @@ const SignUp = React.lazy(
 const  HomePage =   React.lazy(
      ()=>import('../pages/MainPage')
 )
+
   export type IRoute = {
     name: string;
     path: string;
@@ -34,5 +36,6 @@ const  HomePage =   React.lazy(
         path: '/home',
         pathname: '/home',
         component: HomePage,
-      }
+      },
+
   ]

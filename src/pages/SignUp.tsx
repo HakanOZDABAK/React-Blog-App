@@ -16,7 +16,7 @@ import { UserServices } from "../service/UserServices";
 import { NavLink } from "react-router-dom";
 import { log } from "console";
 import { useUserStore } from "../store/useUserStore";
-import { toast } from "react-toastify";
+import { Bounce, toast } from "react-toastify";
 
 function Copyright(props: any) {
   return (
@@ -47,7 +47,6 @@ interface IRegisterData {
 }
 
 export default function SignUp() {
-  
   const [registerData, setRegisterData] = React.useState<IRegisterData>({
     firstName: "",
     lastName: "",
@@ -55,15 +54,40 @@ export default function SignUp() {
     password: "",
     profileName: "",
   });
-const handleSignUp = async (data:any) =>{
-  try{
-   let userservices = new UserServices()
-   const result = await userservices.userRegister(data)
-   toast("User Added Successfuly");  
-}catch(error){
-  console.log(error)
-}
-}
+  const handleSignUp = async (data: any) => {
+    try {
+      let userservices = new UserServices();
+      const result = await userservices.userRegister(data);
+      toast.success("User Added Successfuly", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
+    } catch (error) {
+      toast.success(error as string, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
+    }
+  };
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    handleSignUp(registerData);
+  };
   return (
     <ThemeProvider theme={defaultTheme}>
       <Container component="main" maxWidth="xs">
@@ -82,7 +106,12 @@ const handleSignUp = async (data:any) =>{
           <Typography component="h1" variant="h5">
             Sign up
           </Typography>
-          <Box component="form" noValidate sx={{ mt: 3 }}>
+          <Box
+            component="form"
+            onSubmit={handleSubmit}
+            noValidate
+            sx={{ mt: 3 }}
+          >
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
                 <TextField
@@ -93,7 +122,12 @@ const handleSignUp = async (data:any) =>{
                   id="firstName"
                   label="First Name"
                   autoFocus
-                  onChange={(e) => setRegisterData({ ...registerData, firstName: e.target.value })}
+                  onChange={(e) =>
+                    setRegisterData({
+                      ...registerData,
+                      firstName: e.target.value,
+                    })
+                  }
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -104,8 +138,12 @@ const handleSignUp = async (data:any) =>{
                   label="Last Name"
                   name="lastName"
                   autoComplete="family-name"
-                  onChange={(e) => setRegisterData({ ...registerData, lastName: e.target.value })}
-
+                  onChange={(e) =>
+                    setRegisterData({
+                      ...registerData,
+                      lastName: e.target.value,
+                    })
+                  }
                 />
               </Grid>
               <Grid item xs={12}>
@@ -116,8 +154,12 @@ const handleSignUp = async (data:any) =>{
                   label="Username"
                   name="userName"
                   autoComplete="userName"
-                  onChange={(e) => setRegisterData({ ...registerData, profileName: e.target.value })}
-
+                  onChange={(e) =>
+                    setRegisterData({
+                      ...registerData,
+                      profileName: e.target.value,
+                    })
+                  }
                 />
               </Grid>
               <Grid item xs={12}>
@@ -128,8 +170,9 @@ const handleSignUp = async (data:any) =>{
                   label="Email Address"
                   name="email"
                   autoComplete="email"
-                  onChange={(e) => setRegisterData({ ...registerData, email: e.target.value })}
-
+                  onChange={(e) =>
+                    setRegisterData({ ...registerData, email: e.target.value })
+                  }
                 />
               </Grid>
               <Grid item xs={12}>
@@ -141,8 +184,12 @@ const handleSignUp = async (data:any) =>{
                   type="password"
                   id="password"
                   autoComplete="new-password"
-                  onChange={(e) => setRegisterData({ ...registerData, password: e.target.value })}
-
+                  onChange={(e) =>
+                    setRegisterData({
+                      ...registerData,
+                      password: e.target.value,
+                    })
+                  }
                 />
               </Grid>
               <Grid item xs={12}>
@@ -159,7 +206,6 @@ const handleSignUp = async (data:any) =>{
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
-              onClick={()=>handleSignUp(registerData)}
             >
               Sign Up
             </Button>

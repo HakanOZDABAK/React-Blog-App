@@ -4,4 +4,9 @@ export class postServices {
  async addPost(){
   
  }
+
+ async getPost(){
+  
+
+ }
 }

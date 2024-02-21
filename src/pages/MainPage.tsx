@@ -9,6 +9,7 @@ import {
   Typography,
 } from "@mui/material";
 import React, { useState } from "react";
+import { useNavigate } from "react-router";
 
 export default function MainPage() {
   const [showSecondCard, setShowSecondCard] = useState(false);
@@ -16,6 +17,7 @@ export default function MainPage() {
   const handleAddComment = () => {
     setShowSecondCard(true);
   };
+  const nav = useNavigate();
 
   return (
     <div>
@@ -55,25 +57,23 @@ export default function MainPage() {
             </Grid>
             <Grid item xs={4}></Grid>
             <Grid item xs={8}>
-             
-                <div>
-                  <Card sx={{ marginTop: "5px" }}>
-                    <CardActionArea>
-                      <CardContent>
-                        <Typography gutterBottom variant="h5" component="div">
-                          Lizard
-                        </Typography>
-                        <Divider />
-                        <Typography variant="body2" color="text.secondary">
-                          Lizards are a widespread group of squamate reptiles,
-                          with over 6,000 species, ranging across all continents
-                          except Antarctica
-                        </Typography>
-                      </CardContent>
-                    </CardActionArea>
-                  </Card>
-                </div>
-           
+              <div>
+                <Card sx={{ marginTop: "5px" }}>
+                  <CardActionArea>
+                    <CardContent>
+                      <Typography gutterBottom variant="h5" component="div">
+                        Lizard
+                      </Typography>
+                      <Divider />
+                      <Typography variant="body2" color="text.secondary">
+                        Lizards are a widespread group of squamate reptiles,
+                        with over 6,000 species, ranging across all continents
+                        except Antarctica
+                      </Typography>
+                    </CardContent>
+                  </CardActionArea>
+                </Card>
+              </div>
             </Grid>
           </Grid>
         </CardActions>

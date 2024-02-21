@@ -19,6 +19,7 @@ import Toolbar from "@mui/material/Toolbar";
 import { styled } from "@mui/material/styles";
 import SendIcon from '@mui/icons-material/Send';
 import * as React from "react";
+import { ManageAccounts } from "@mui/icons-material";
 
 const StyledFab = styled(Fab)({
   position: "absolute",
@@ -91,7 +92,7 @@ export default function Navbar() {
           ></StyledFab>
           <Box sx={{ flexGrow: 1 }} />
           <IconButton color="inherit">
-            <SearchIcon />
+            <ManageAccounts />
           </IconButton>
           <IconButton color="inherit">
             <MoreIcon />

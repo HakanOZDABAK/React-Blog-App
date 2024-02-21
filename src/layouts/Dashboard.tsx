@@ -7,10 +7,7 @@ import { useUserStore } from "../store/useUserStore";
 import SignIn from "../pages/SignIn";
 
 export default function Dashboard() {
-  const storedLoginState = localStorage.getItem('isLoggedIn');
-  const initialLoginState = storedLoginState ? JSON.parse(storedLoginState) : false;
-
-  const isLoggedIn = useUserStore((state) => state.login, initialLoginState);
+  const isLoggedIn = useUserStore((state) => state.login);
 
   if (isLoggedIn) {
     return (

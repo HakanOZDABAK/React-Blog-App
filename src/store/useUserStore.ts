@@ -3,9 +3,10 @@ import { create } from "zustand";
 type IUserStore = {
   login: boolean;
   userName: string;
+  userId:number,
   token: string;
   setLogin: (login: boolean) => void;
-  setUserData: (userName: string, token: string) => void;
+  setUserData: (userName: string, token: string,userId:number) => void;
 };
 
 export const useUserStore = create<IUserStore>((set) => {
@@ -15,6 +16,7 @@ export const useUserStore = create<IUserStore>((set) => {
   return {
     login: initialLoginState,
     userName: "",
+    userId:0,
     token: "",
     setLogin: (login) => {
       set(() => {
@@ -22,6 +24,6 @@ export const useUserStore = create<IUserStore>((set) => {
         return { login };
       });
     },
-    setUserData: (userName, token) => set(() => ({ userName, token })),
+    setUserData: (userName, token,userId) => set(() => ({ userName, token,userId })),
   };
 });

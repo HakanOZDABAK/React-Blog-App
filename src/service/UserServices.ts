@@ -1,9 +1,9 @@
 import axios from "axios"
 export class UserServices {
 
- async userRegister(userRegisterData:any){
+userRegister(userRegisterData:any){
 
-        return await axios.post("http://localhost:8081/api/v1/auth/register",userRegisterData,
+        return axios.post("http://localhost:8081/api/v1/auth/register",userRegisterData,
         {
             headers: {
                 Accept: "*/*",
@@ -13,9 +13,9 @@ export class UserServices {
         );
  }
  
- async userLogin(userLoginData:any){
+userLogin(userLoginData:any){
 
-    return await axios.post("http://localhost:8081/api/v1/auth/authenticate",userLoginData,
+    return axios.post("http://localhost:8081/api/v1/auth/authenticate",userLoginData,
     {
         headers: {
             Accept: "*/*",

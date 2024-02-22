@@ -9,27 +9,30 @@ import SignIn from "../pages/SignIn";
 export default function Dashboard() {
   const isLoggedIn = useUserStore((state) => state.login);
 
-  if (isLoggedIn) {
-    return (
-      <Suspense fallback={<div>Loading</div>}>
-        <Routes>
-          {routes.map((route: IRoute) => (
-            <Route
-              key={route.path}
-              path={route.path}
-              element={<route.component />}
-            />
-          ))}
-        </Routes>
-      </Suspense>
-    );
-  } else {
-    return (
+  const PrivateRoute = ({ children }: any) => {
+    if (!isLoggedIn) {
+      return <Navigate to="/signIn" />;
+    }
+    return children;
+  };
+
+
+  return (
+    <Suspense fallback={<div>Loading</div>}>
       <Routes>
-        <Route path="/*" element={<Navigate to="/signIn" />} />
-        <Route path="/signIn" element={<SignIn />} />
-        <Route path="/signUp" element={<SignUp />} />
+        {routes.map((route: IRoute) => (
+          <Route
+            key={route.path}
+            path={route.path}
+            element={
+              <PrivateRoute>
+                {route.component}
+              </PrivateRoute>
+            }
+          />
+        ))}
+        <Route path="/signIn" element={<SignIn/>} />
       </Routes>
-    );
-  }
+    </Suspense>
+  );
 }

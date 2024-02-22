@@ -17,9 +17,15 @@ import Fab from "@mui/material/Fab";
 import IconButton from "@mui/material/IconButton";
 import Toolbar from "@mui/material/Toolbar";
 import { styled } from "@mui/material/styles";
-import SendIcon from '@mui/icons-material/Send';
+import SendIcon from "@mui/icons-material/Send";
 import * as React from "react";
 import { ManageAccounts } from "@mui/icons-material";
+import { useUserStore } from "../store/useUserStore";
+import { UserServices } from "../service/UserServices";
+import { assert } from "console";
+import { PostServices } from "../service/PostServices";
+import { Bounce, toast } from "react-toastify";
+import { usePostStore } from "../store/usePostStore";
 
 const StyledFab = styled(Fab)({
   position: "absolute",
@@ -33,13 +39,14 @@ const StyledFab = styled(Fab)({
 export default function Navbar() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [postMessage, setPostMessage] = React.useState<any>("");
-
+  const [postName, setPostName] = React.useState<any>("");
+  const { userId, userName, token } = useUserStore();
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(anchorEl ? null : event.currentTarget);
   };
-
+  const{setPosts} = usePostStore()
   const open = Boolean(anchorEl);
-  const id = open ? "simple-popper" : undefined;
+  const popperId = open ? "simple-popper" : undefined;
   type Anchor = "top" | "left" | "bottom" | "right";
 
   const [state, setState] = React.useState({
@@ -62,8 +69,48 @@ export default function Navbar() {
 
       setState({ ...state, [anchor]: open });
     };
-  const handleTextFieldChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handlePostNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPostName(e.target.value)
+  };
+  const handlePostDetailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPostMessage(e.target.value);
+  };
+
+  const addPost = async () => {
+    const userData = {
+      postName: postName,
+      postDetail: postMessage,
+      user: {
+        id: userId,
+        userName: userName,
+      },
+    };
+  
+    try {
+      let postServices = new PostServices();
+      await postServices.addPost(userData, token);
+
+      await new Promise(resolve => setTimeout(resolve, 500));
+  
+      const updatedPosts = await postServices.getAllPosts(token);
+      setPosts(updatedPosts);
+  
+      console.log("Post Added and Posts Updated:", updatedPosts);
+  
+      toast.success("Post Added", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
@@ -97,7 +144,7 @@ export default function Navbar() {
           <IconButton color="inherit">
             <MoreIcon />
           </IconButton>
-          <Popper id={id} open={open} anchorEl={anchorEl} transition>
+          <Popper id={popperId} open={open} anchorEl={anchorEl} transition>
             {({ TransitionProps }) => (
               <Fade {...TransitionProps}>
                 <Box sx={{ border: 1, p: 1, bgcolor: "background.paper" }}>
@@ -112,17 +159,32 @@ export default function Navbar() {
                   >
                     <div>
                       <TextField
-                        id="outlined-multiline-flexible"
+                        id="outlined-multiline-flexible-postName"
+                        label="Your Message Name"
+                        multiline
+                        maxRows={4}
+                        value={postName}
+                        onChange={handlePostNameChange}
+                      />
+                      <TextField
+                        id="outlined-multiline-flexible-postDetail"
                         label="Your Message"
                         multiline
                         maxRows={4}
                         value={postMessage}
-                        onChange={handleTextFieldChange}
-
+                        onChange={handlePostDetailChange}
                       />
                     </div>
                   </Box>
-                  <Button disabled={postMessage.length === 0} variant="contained" color="success" endIcon={<SendIcon/>} onClick={() => alert(postMessage)}>Post It!</Button>
+                  <Button
+                    disabled={postMessage.length === 0}
+                    variant="contained"
+                    color="success"
+                    endIcon={<SendIcon />}
+                    onClick={() => addPost()}
+                  >
+                    Post It!
+                  </Button>
                 </Box>
               </Fade>
             )}

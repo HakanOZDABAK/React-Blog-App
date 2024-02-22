@@ -10,8 +10,9 @@ function App() {
   if(login){
     return(    
     <div className="App">
-    <Navbar/>
     <Dashboard/>
+    <Navbar/>
+ 
         </div>)
   }else{
   return (

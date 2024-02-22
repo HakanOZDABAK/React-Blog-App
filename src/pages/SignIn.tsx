@@ -53,7 +53,7 @@ export default function SignIn() {
       let userServices = new UserServices();
       const result = await userServices.userLogin(data);
       setLogin(true);
-      setUserData(result.userName, result.accessToken);
+      setUserData(result.userName, result.accessToken,result.id);
       nav("/home");
     } catch (error) {
       console.log(error);

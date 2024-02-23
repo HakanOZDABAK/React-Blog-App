@@ -9,12 +9,6 @@ import SignIn from "../pages/SignIn";
 export default function Dashboard() {
   const isLoggedIn = useUserStore((state) => state.login);
 
-  const PrivateRoute = ({ children }: any) => {
-    if (!isLoggedIn) {
-      return <Navigate to="/signIn" />;
-    }
-    return children;
-  };
 
 
   return (
@@ -24,12 +18,7 @@ export default function Dashboard() {
           <Route
             key={route.path}
             path={route.path}
-            element={
-              <PrivateRoute>
-                {route.component}
-              </PrivateRoute>
-            }
-          />
+          Component={route.component}/>
         ))}
         <Route path="/signIn" element={<SignIn/>} />
       </Routes>

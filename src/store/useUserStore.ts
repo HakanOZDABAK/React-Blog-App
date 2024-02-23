@@ -10,11 +10,10 @@ type IUserStore = {
 };
 
 export const useUserStore = create<IUserStore>((set) => {
-  const storedLoginState = localStorage.getItem("isLoggedIn");
-  const initialLoginState = storedLoginState ? JSON.parse(storedLoginState) : false;
+
 
   return {
-    login: initialLoginState,
+    login: false,
     userName: "",
     userId:0,
     token: "",

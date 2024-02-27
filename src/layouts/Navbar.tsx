@@ -81,8 +81,8 @@ export default function Navbar() {
       postName: postName,
       postDetail: postMessage,
       user: {
-        id: userId,
-        userName: userName,
+        blogUserId: userId,
+        profileName: userName,
       },
     };
   

@@ -24,6 +24,7 @@ export default function MainPage() {
   const [commentMessage, setCommentMessage] = useState<any>("");
   const { posts, setPosts } = usePostStore();
   const [open, setOpen] = useState(false);
+  const {userId,userName} = useUserStore()
   const handleOpen = (post: any) => {
     setSelectedPost(post);
     setOpen(true);
@@ -74,8 +75,8 @@ export default function MainPage() {
     const commentData = {
       commentDetail: commentMessage,
       blogUser: {
-        blogUserId: selectedPost.blogUser.blogUserId,
-        profileName: selectedPost.blogUser.profileName,
+        blogUserId: userId,
+        profileName: userName,
       },
       post: {
         blogPostId: selectedPost.id,
@@ -141,7 +142,7 @@ export default function MainPage() {
                   </Grid>
                   {post.comments.length > 0 &&
                     post.comments.map((comment: any) => (
-                      <Grid item xs={4} key={comment.commentId}>
+                      <Grid item xs={12} key={comment.commentId}>
                         <Card
                           sx={{
                             maxWidth: 500,

@@ -26,6 +26,7 @@ export default function MainPage() {
         try {
           let postServices = new PostServices();
           const result = await postServices.getAllPosts(token);
+          console.log(result);
           setPosts(result);
         } catch (error) {
           console.log(error);
@@ -45,52 +46,90 @@ export default function MainPage() {
 
   return (
     <div>
-      {posts.slice().reverse().map((post: any) => (
-        <Container>
-          <Card
-            key={post.id}
-            sx={{
-              maxWidth: 500,
-              margin: "auto",
-              marginTop: "10px",
-              borderColor: "black",
-              borderWidth: 2,
-              borderStyle: "solid",
-            }}
-          >
-            <CardActionArea onClick={handleAddComment}>
-              <CardContent>
-                <Typography gutterBottom variant="h5" component="div">
-                  {post.postUser.profileName}
-                </Typography>
-                <Divider />
-                <Typography
-                  variant="body2"
-                  color="text.secondary"
-                  sx={{ marginTop: "5px" }}
-                >
-                  {post.postDetail}
-                </Typography>
-              </CardContent>
-            </CardActionArea>
-
-            <CardActions sx={{ display: "flex", justifyContent: "flex-end" }}>
-              <Grid container rowSpacing={1}>
-                <Grid item xs={12}>
-                  <Button
-                    size="small"
-                    color="primary"
-                    onClick={handleAddComment}
+      {posts
+        .slice()
+        .reverse()
+        .map((post: any) => (
+          <Container>
+            <Card
+              key={post.id}
+              sx={{
+                maxWidth: 500,
+                margin: "auto",
+                marginTop: "10px",
+                borderColor: "black",
+                borderWidth: 2,
+                borderStyle: "solid",
+              }}
+            >
+              <CardActionArea onClick={handleAddComment}>
+                <CardContent>
+                  <Typography gutterBottom variant="h5" component="div">
+                    {post.blogUser.profileName}
+                  </Typography>
+                  <Divider />
+                  <Typography
+                    variant="body2"
+                    color="text.secondary"
+                    sx={{ marginTop: "5px" }}
                   >
-                    Add Comment
-                  </Button>
+                    {post.postDetail}
+                  </Typography>
+                </CardContent>
+              </CardActionArea>
+
+              <CardActions sx={{ display: "flex", justifyContent: "flex-end" }}>
+                <Grid container rowSpacing={1}>
+                  <Grid item xs={12}>
+                    <Button
+                      size="small"
+                      color="primary"
+                      onClick={handleAddComment}
+                    >
+                      Add Comment
+                    </Button>
+                  </Grid>
+                  {post.comments.length > 0 &&
+                    post.comments.map((comment: any) => (
+                      <Grid item xs={4} key={comment.commentId}>
+                        <Card
+                          sx={{
+                            maxWidth: 500,
+                            margin: "auto",
+                            marginTop: "10px",
+                            borderColor: "black",
+                            borderWidth: 2,
+                            borderStyle: "solid",
+                          }}
+                        >
+                          <CardActionArea onClick={handleAddComment}>
+                            <CardContent>
+                              <Typography
+                                gutterBottom
+                                variant="h5"
+                                component="div"
+                              >
+                                {comment.blogUser &&
+                                  comment.blogUser.profileName}
+                              </Typography>
+                              <Divider />
+                              <Typography
+                                variant="body2"
+                                color="text.secondary"
+                                sx={{ marginTop: "5px" }}
+                              >
+                                {comment.commentDetail}
+                              </Typography>
+                            </CardContent>
+                          </CardActionArea>
+                        </Card>
+                      </Grid>
+                    ))}
                 </Grid>
-                <Grid item xs={4}></Grid>
-              </Grid>
-            </CardActions>
-          </Card>
-        </Container>
-      ))}
+              </CardActions>
+            </Card>
+          </Container>
+        ))}
     </div>
   );
 }

@@ -1,4 +1,5 @@
 import {
+  Box,
   Button,
   Card,
   CardActionArea,
@@ -7,18 +8,28 @@ import {
   Container,
   Divider,
   Grid,
+  Modal,
+  TextField,
   Typography,
 } from "@mui/material";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router";
 import { PostServices } from "../service/PostServices";
-import { useUserStore } from "../store/useUserStore";
 import { usePostStore } from "../store/usePostStore";
+import { useUserStore } from "../store/useUserStore";
+import SendIcon from "@mui/icons-material/Send";
+import { CommentServices } from "../service/CommentServices";
 
 export default function MainPage() {
   const { token } = useUserStore();
-  const [showSecondCard, setShowSecondCard] = useState(false);
+  const [commentMessage, setCommentMessage] = useState<any>("");
   const { posts, setPosts } = usePostStore();
+  const [open, setOpen] = useState(false);
+  const handleOpen = (post: any) => {
+    setSelectedPost(post);
+    setOpen(true);
+  };
+  const handleClose = () => setOpen(false);
+  const [selectedPost, setSelectedPost] = useState<any>(null);
 
   useEffect(() => {
     if (token) {
@@ -39,11 +50,50 @@ export default function MainPage() {
     }
   }, [token]);
 
-  const handleAddComment = () => {
-    setShowSecondCard(true);
+  const style = {
+    position: "absolute" as "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: 400,
+    bgcolor: "background.paper",
+    border: "2px solid #000",
+    boxShadow: 24,
+    p: 4,
   };
-  const nav = useNavigate();
+  const handleCommentNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setCommentMessage(e.target.value);
+  };
 
+  const addComment = async () => {
+    if (!selectedPost) {
+      console.error("No selected post");
+      return;
+    }
+
+    const commentData = {
+      commentDetail: commentMessage,
+      blogUser: {
+        blogUserId: selectedPost.blogUser.blogUserId,
+        profileName: selectedPost.blogUser.profileName,
+      },
+      post: {
+        blogPostId: selectedPost.id,
+      },
+    };
+
+    try {
+      let commentService = new CommentServices();
+      let postServices = new PostServices();
+      const result = await commentService.addComment(commentData, token);
+      await new Promise((resolve) => setTimeout(resolve, 500));
+      const updatedPosts = await postServices.getAllPosts(token);
+      setPosts(updatedPosts);
+      console.log("Comment Added and Posts Updated:", updatedPosts);
+    } catch (err) {
+      console.log(err);
+    }
+  };
   return (
     <div>
       {posts
@@ -62,7 +112,7 @@ export default function MainPage() {
                 borderStyle: "solid",
               }}
             >
-              <CardActionArea onClick={handleAddComment}>
+              <CardActionArea>
                 <CardContent>
                   <Typography gutterBottom variant="h5" component="div">
                     {post.blogUser.profileName}
@@ -84,7 +134,7 @@ export default function MainPage() {
                     <Button
                       size="small"
                       color="primary"
-                      onClick={handleAddComment}
+                      onClick={() => handleOpen(post)}
                     >
                       Add Comment
                     </Button>
@@ -102,7 +152,7 @@ export default function MainPage() {
                             borderStyle: "solid",
                           }}
                         >
-                          <CardActionArea onClick={handleAddComment}>
+                          <CardActionArea>
                             <CardContent>
                               <Typography
                                 gutterBottom
@@ -130,6 +180,49 @@ export default function MainPage() {
             </Card>
           </Container>
         ))}
+      <Modal
+        keepMounted
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="keep-mounted-modal-title"
+        aria-describedby="keep-mounted-modal-description"
+      >
+        <Box sx={style}>
+          <Typography id="keep-mounted-modal-title" variant="h6" component="h2">
+            Add Comment
+          </Typography>
+          <Typography id="keep-mounted-modal-description" sx={{ mt: 2 }}>
+            <Box
+              component="form"
+              sx={{
+                "& .MuiTextField-root": { m: 1, width: "25ch" },
+              }}
+              noValidate
+              autoComplete="off"
+            >
+              <div>
+                <TextField
+                  id="outlined-multiline-flexible-postName"
+                  label="Your Message Name"
+                  multiline
+                  maxRows={4}
+                  value={commentMessage}
+                  onChange={handleCommentNameChange}
+                />
+              </div>
+            </Box>
+            <Button
+              disabled={commentMessage.length === 0}
+              variant="contained"
+              color="success"
+              endIcon={<SendIcon />}
+              onClick={() => addComment()}
+            >
+              Post It!
+            </Button>
+          </Typography>
+        </Box>
+      </Modal>
     </div>
   );
 }

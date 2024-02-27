@@ -191,6 +191,7 @@ export default function Navbar() {
           </Popper>
         </Toolbar>
       </AppBar>
+      
     </React.Fragment>
   );
 }

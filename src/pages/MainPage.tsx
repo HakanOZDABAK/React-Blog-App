@@ -24,7 +24,7 @@ export default function MainPage() {
   const [commentMessage, setCommentMessage] = useState<any>("");
   const { posts, setPosts } = usePostStore();
   const [open, setOpen] = useState(false);
-  const {userId,userName} = useUserStore()
+  const { userId, userName } = useUserStore();
   const handleOpen = (post: any) => {
     setSelectedPost(post);
     setOpen(true);

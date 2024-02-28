@@ -69,20 +69,36 @@ export default function SignUp() {
         theme: "light",
         transition: Bounce,
       });
-    } catch (error) {
-      toast.success(error as string, {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-        transition: Bounce,
-      });
-    }
-  };
+    } catch (error:any) {
+   if(error.response.data.message == "Validation Exception"){   toast.error(`Error: ${JSON.stringify(error.response.data.validationErrors)}`, {
+    position: "top-right",
+    autoClose: 5000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "light",
+    transition: Bounce,
+  });}else{
+    toast.error(`Error: ${JSON.stringify(error.response.data)}`, {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+    });
+  }
+
+      
+      
+    
+  }
+}
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

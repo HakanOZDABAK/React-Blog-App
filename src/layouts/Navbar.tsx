@@ -1,15 +1,9 @@
-import AddIcon from "@mui/icons-material/Add";
+import { ManageAccounts } from "@mui/icons-material";
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import MenuIcon from "@mui/icons-material/Menu";
 import MoreIcon from "@mui/icons-material/MoreVert";
-import SearchIcon from "@mui/icons-material/Search";
-import {
-  Button,
-  Drawer,
-  Fade,
-  Popper,
-  TextField,
-  Typography,
-} from "@mui/material";
+import SendIcon from "@mui/icons-material/Send";
+import { Button, Drawer, Fade, Popper, TextField } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -17,15 +11,11 @@ import Fab from "@mui/material/Fab";
 import IconButton from "@mui/material/IconButton";
 import Toolbar from "@mui/material/Toolbar";
 import { styled } from "@mui/material/styles";
-import SendIcon from "@mui/icons-material/Send";
 import * as React from "react";
-import { ManageAccounts } from "@mui/icons-material";
-import { useUserStore } from "../store/useUserStore";
-import { UserServices } from "../service/UserServices";
-import { assert } from "console";
-import { PostServices } from "../service/PostServices";
 import { Bounce, toast } from "react-toastify";
+import { PostServices } from "../service/PostServices";
 import { usePostStore } from "../store/usePostStore";
+import { useUserStore } from "../store/useUserStore";
 
 const StyledFab = styled(Fab)({
   position: "absolute",
@@ -38,13 +28,14 @@ const StyledFab = styled(Fab)({
 
 export default function Navbar() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [image, setImage] = React.useState<any>();
   const [postMessage, setPostMessage] = React.useState<any>("");
   const [postName, setPostName] = React.useState<any>("");
   const { userId, userName, token } = useUserStore();
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(anchorEl ? null : event.currentTarget);
   };
-  const{setPosts} = usePostStore()
+  const { setPosts } = usePostStore();
   const open = Boolean(anchorEl);
   const popperId = open ? "simple-popper" : undefined;
   type Anchor = "top" | "left" | "bottom" | "right";
@@ -70,14 +61,24 @@ export default function Navbar() {
       setState({ ...state, [anchor]: open });
     };
   const handlePostNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setPostName(e.target.value)
+    setPostName(e.target.value);
   };
   const handlePostDetailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPostMessage(e.target.value);
   };
 
   const addPost = async () => {
-    const userData = {
+    if (image) {
+
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const binaryStream = reader.result;
+        console.log("Binary Stream:", binaryStream);
+
+      };
+
+    }
+    /*const userData = {
       postName: postName,
       postDetail: postMessage,
       user: {
@@ -85,18 +86,18 @@ export default function Navbar() {
         profileName: userName,
       },
     };
-  
+
     try {
       let postServices = new PostServices();
       await postServices.addPost(userData, token);
 
-      await new Promise(resolve => setTimeout(resolve, 500));
-  
+      await new Promise((resolve) => setTimeout(resolve, 500));
+
       const updatedPosts = await postServices.getAllPosts(token);
       setPosts(updatedPosts);
-  
+
       console.log("Post Added and Posts Updated:", updatedPosts);
-  
+
       toast.success("Post Added", {
         position: "top-right",
         autoClose: 5000,
@@ -110,9 +111,34 @@ export default function Navbar() {
       });
     } catch (err) {
       console.log(err);
-    }
+    }*/
   };
 
+  const VisuallyHiddenInput = styled("input")({
+    clip: "rect(0 0 0 0)",
+    clipPath: "inset(50%)",
+    height: 1,
+    overflow: "hidden",
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    whiteSpace: "nowrap",
+    width: 1,
+  });
+  const handleUpload = () => {
+    if (image) {
+      // Resmi binary stream'e dönüştürme işlemleri burada gerçekleşir
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const binaryStream = reader.result;
+        console.log("Binary Stream:", binaryStream);
+      };
+    }
+  };
+  const handleImageChange = (event: any) => {
+    // Seçilen resmi state'e ayarla
+    setImage(event.target.files[0]);
+  };
   return (
     <React.Fragment>
       <CssBaseline />
@@ -174,6 +200,19 @@ export default function Navbar() {
                         value={postMessage}
                         onChange={handlePostDetailChange}
                       />
+                      <Button
+                        component="label"
+                        role={undefined}
+                        variant="contained"
+                        tabIndex={-1}
+                        startIcon={<CloudUploadIcon />}
+                      >
+                        Upload file
+                        <VisuallyHiddenInput
+                          type="file"
+                          onChange={handleImageChange}
+                        />
+                      </Button>
                     </div>
                   </Box>
                   <Button
@@ -191,7 +230,6 @@ export default function Navbar() {
           </Popper>
         </Toolbar>
       </AppBar>
-      
     </React.Fragment>
   );
 }

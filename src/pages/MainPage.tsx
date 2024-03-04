@@ -30,13 +30,16 @@ export default function MainPage() {
     setOpen(true);
   };
   const handleClose = () => setOpen(false);
+  const [postImages, setPostImages] = useState<{ [postId: string]: string }>({});
+
   const [selectedPost, setSelectedPost] = useState<any>(null);
 
   useEffect(() => {
+    let postServices = new PostServices();
     if (token) {
       const getAllPost = async () => {
         try {
-          let postServices = new PostServices();
+
           const result = await postServices.getAllPosts(token);
           console.log(result);
           setPosts(result);
@@ -45,6 +48,17 @@ export default function MainPage() {
         }
       };
 
+      const fetchPostImages = async () => {
+      
+        const imageUrls: { [postId: string]: string } = {};
+        for (const post of posts) {
+          const imageUrl = await postServices.getImagesByPostId(post.id,token);
+          imageUrls[post.id] = imageUrl;
+        }
+        setPostImages(imageUrls);
+      };
+    
+      fetchPostImages();
       getAllPost();
     } else {
       setPosts([]);
@@ -95,6 +109,7 @@ export default function MainPage() {
       console.log(err);
     }
   };
+
   return (
     <div>
       {posts
@@ -126,6 +141,15 @@ export default function MainPage() {
                   >
                     {post.postDetail}
                   </Typography>
+                  <Typography
+                    variant="body2"
+                    color="text.secondary"
+                    sx={{ marginTop: "5px" }}
+                  >
+                    <Image src={postImages[post.id]} alt="Post Image" />
+    </Typography>
+           
+             
                 </CardContent>
               </CardActionArea>
 

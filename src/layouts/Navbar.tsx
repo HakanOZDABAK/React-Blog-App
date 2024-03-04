@@ -68,17 +68,7 @@ export default function Navbar() {
   };
 
   const addPost = async () => {
-    if (image) {
-
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        const binaryStream = reader.result;
-        console.log("Binary Stream:", binaryStream);
-
-      };
-
-    }
-    /*const userData = {
+const userData = {
       postName: postName,
       postDetail: postMessage,
       user: {
@@ -111,7 +101,7 @@ export default function Navbar() {
       });
     } catch (err) {
       console.log(err);
-    }*/
+    
   };
 
   const VisuallyHiddenInput = styled("input")({
@@ -232,4 +222,5 @@ export default function Navbar() {
       </AppBar>
     </React.Fragment>
   );
+}
 }

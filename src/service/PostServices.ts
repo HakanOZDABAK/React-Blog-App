@@ -28,4 +28,27 @@ export class PostServices {
       console.log(error);
     }
   }
+
+  getImagesByPostId(postId:string,token:string){
+
+    try {
+      const result =  axios
+        .get("http://localhost:8081/api/v1/files/getFilesByPostId", {
+          headers: {
+            Accept: "*/*",
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          params: {
+            postId: postId,
+          }
+          
+        })
+        .then((result) => result.data);
+
+      return result;
+    } catch (error) {
+      console.log(error);
+    }
+  }
 }

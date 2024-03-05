@@ -33,7 +33,7 @@ export class PostServices {
 
     try {
       const result =  axios
-        .get("http://localhost:8081/api/v1/files/getFilesByPostId", {
+        .get("http://localhost:8081/api/v1/files/getFileByPostId", {
           headers: {
             Accept: "*/*",
             "Content-Type": "application/json",
@@ -41,6 +41,29 @@ export class PostServices {
           },
           params: {
             postId: postId,
+          }
+          
+        })
+        .then((result) => result.data);
+
+      return result;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  addImage(file:any,token:string,postId:string){
+
+    try {
+      const result =  axios
+        .get("http://localhost:8081/api/v1/files/getFilesByPostId", {
+          headers: {
+            Accept: "*/*",
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          params: {
+            name: postId,
+            file:file
           }
           
         })

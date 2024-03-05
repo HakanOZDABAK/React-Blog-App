@@ -68,7 +68,7 @@ export default function Navbar() {
   };
 
   const addPost = async () => {
-const userData = {
+    const userData = {
       postName: postName,
       postDetail: postMessage,
       user: {
@@ -101,7 +101,7 @@ const userData = {
       });
     } catch (err) {
       console.log(err);
-    
+    }
   };
 
   const VisuallyHiddenInput = styled("input")({
@@ -115,16 +115,7 @@ const userData = {
     whiteSpace: "nowrap",
     width: 1,
   });
-  const handleUpload = () => {
-    if (image) {
-      // Resmi binary stream'e dönüştürme işlemleri burada gerçekleşir
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        const binaryStream = reader.result;
-        console.log("Binary Stream:", binaryStream);
-      };
-    }
-  };
+
   const handleImageChange = (event: any) => {
     // Seçilen resmi state'e ayarla
     setImage(event.target.files[0]);
@@ -222,5 +213,4 @@ const userData = {
       </AppBar>
     </React.Fragment>
   );
-}
 }

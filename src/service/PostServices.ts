@@ -55,7 +55,7 @@ export class PostServices {
 
     try {
       const result =  axios
-        .get("http://localhost:8081/api/v1/files/getFilesByPostId", {
+        .get("http://localhost:8081/api/v1/files/upload", {
           headers: {
             Accept: "*/*",
             "Content-Type": "application/json",

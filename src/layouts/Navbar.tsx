@@ -80,13 +80,14 @@ export default function Navbar() {
     try {
       let postServices = new PostServices();
       await postServices.addPost(userData, token);
+      await postServices.addImage(image,token,postName)
 
-      await new Promise((resolve) => setTimeout(resolve, 500));
+     /* await new Promise((resolve) => setTimeout(resolve, 500));
 
       const updatedPosts = await postServices.getAllPosts(token);
       setPosts(updatedPosts);
 
-      console.log("Post Added and Posts Updated:", updatedPosts);
+      console.log("Post Added and Posts Updated:", updatedPosts);*/
 
       toast.success("Post Added", {
         position: "top-right",

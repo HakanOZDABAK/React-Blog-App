@@ -56,7 +56,7 @@ export default function MainPage() {
           const imageUrl = await postServices.getImagesByPostId(post.id, token);
           console.log(imageUrl)
           imageUrls[post.id] = imageUrl.fileUri;
-          
+          console.log(imageUrls)
         }
         setPostImages(imageUrls);
         
@@ -71,7 +71,7 @@ export default function MainPage() {
     } else {
       setPosts([]);
     }
-  }, [token]);
+  }, [token,commentMessage,posts]);
 
   const style = {
     position: "absolute" as "absolute",
@@ -109,10 +109,10 @@ export default function MainPage() {
       let commentService = new CommentServices();
       let postServices = new PostServices();
       const result = await commentService.addComment(commentData, token);
-      await new Promise((resolve) => setTimeout(resolve, 500));
+      /*await new Promise((resolve) => setTimeout(resolve, 500));
       const updatedPosts = await postServices.getAllPosts(token);
       setPosts(updatedPosts);
-      console.log("Comment Added and Posts Updated:", updatedPosts);
+      console.log("Comment Added and Posts Updated:", updatedPosts);*/
     } catch (err) {
       console.log(err);
     }

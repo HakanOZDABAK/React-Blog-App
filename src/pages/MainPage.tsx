@@ -18,6 +18,7 @@ import { usePostStore } from "../store/usePostStore";
 import { useUserStore } from "../store/useUserStore";
 import SendIcon from "@mui/icons-material/Send";
 import { CommentServices } from "../service/CommentServices";
+import { isEqual } from "lodash";
 
 export default function MainPage() {
   const { token } = useUserStore();
@@ -42,8 +43,8 @@ export default function MainPage() {
       const getAllPost = async () => {
         try {
           const result = await postServices.getAllPosts(token);
-
-          setPosts(result);
+          if(!isEqual(result,posts)){setPosts(result);}
+          
         } catch (error) {
           console.log(error);
         }
@@ -53,7 +54,7 @@ export default function MainPage() {
         const imageUrls: { [postId: string]: string } = {};
 
         for (const post of posts) {
-          const imageUrl = await postServices.getImagesByPostId(post.id, token);
+          const imageUrl = await postServices.getImagesByPostId(post.id, token); //Sorun burada buraya bak
   
           imageUrls[post.id] = imageUrl.fileUri;
 
@@ -63,6 +64,7 @@ export default function MainPage() {
       };
 
       const fetchData = async () => {
+    
         await getAllPost();
         await fetchPostImages();
       };

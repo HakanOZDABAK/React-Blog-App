@@ -51,27 +51,22 @@ export class PostServices {
       console.log(error);
     }
   }
-  addImage(file:any,token:string,postId:string){
-
+  addImage(file: any, postId: string, token: string) {
     try {
-      const result =  axios
-        .get("http://localhost:8081/api/v1/files/upload", {
-          headers: {
-            Accept: "*/*",
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          params: {
-            name: postId,
-            file:file
-          }
-          
-        })
-        .then((result) => result.data);
-
+      const formData = new FormData();
+      formData.append('name', postId);
+      formData.append('files', file);
+  
+      const result = axios.post("http://localhost:8081/api/v1/files/upload", formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }).then((result) => result.data);
+  
       return result;
     } catch (error) {
       console.log(error);
     }
   }
+  
 }
